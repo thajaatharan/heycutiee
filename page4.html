@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Surprise! 🎁</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700;900&family=Poppins:wght@300;400;500;600;700&family=Dancing+Script:wght@400;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body class="page4">
+    <div class="popup-overlay" id="popupOverlay">
+        <div class="popup-box">
+            <h2>You want to see it right... &#128522;
+            </h2>
+            <button class="btn-yes" onclick="window.location.href='page5.html'">
+                Yes! 💕
+            </button>
+        </div>
+    </div>
+    
+    <!-- Background Music -->
+    <audio id="backgroundMusic" loop>
+        <source src="C:\Users\santh\OneDrive\Desktop\thajaa\gift\music\happy-birthday-33487.mp3.mp3" type="audio/mpeg">
+    </audio>
+    
+    <!-- Music Control Button -->
+    <button id="musicToggle" class="music-control" onclick="toggleMusic()" title="Toggle Music">
+        <span id="musicIcon">🎵</span>
+    </button>
+    
+    <script>
+        // Music control
+        const audio = document.getElementById('backgroundMusic');
+        let musicPlaying = false;
+        
+        function toggleMusic() {
+            if (musicPlaying) {
+                audio.pause();
+                musicPlaying = false;
+                document.getElementById('musicIcon').textContent = '🔇';
+            } else {
+                audio.play().then(() => {
+                    musicPlaying = true;
+                    document.getElementById('musicIcon').textContent = '🎵';
+                }).catch(() => {
+                    document.getElementById('musicIcon').textContent = '▶️';
+                });
+            }
+        }
+        
+        // Try to start music on first interaction
+        document.addEventListener('click', function startMusic() {
+            if (!musicPlaying) {
+                audio.play().then(() => {
+                    musicPlaying = true;
+                    document.getElementById('musicIcon').textContent = '🎵';
+                }).catch(() => {});
+            }
+            document.removeEventListener('click', startMusic);
+        }, { once: true });
+        
+        // Animate popup appearance
+        window.addEventListener('load', function() {
+            const popup = document.getElementById('popupOverlay');
+            setTimeout(() => {
+                popup.classList.add('show');
+            }, 300);
+        });
+    </script>
+</body>
+</html>
+

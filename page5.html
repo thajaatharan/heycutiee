@@ -1,0 +1,377 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Surprise! 🎁</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700;900&family=Poppins:wght@300;400;500;600;700&family=Dancing+Script:wght@400;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body class="page5">
+    <div class="celebration-bg" id="celebrationBg" style="pointer-events: none !important; z-index: 1;"></div>
+    <div class="container gift-container" style="z-index: 1000; position: relative; min-height: 100vh; display: flex; flex-direction: column; justify-content: center; align-items: center;">
+        <div class="gift-box-wrapper" id="giftBoxWrapper">
+            <div class="gift-box-click-area" id="giftBoxClickArea">
+                <div class="gift-box" id="giftBox">
+                    <div class="gift-box-icon">🎁</div>
+                    <p class="gift-hint">Click the gift box!</p>
+                    <div class="click-indicator">👆</div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="explosion-container hidden" id="explosionContainer" style="width: 100%; max-width: 600px; margin: 0 auto;">
+                <div class="confetti"></div>
+                <div class="confetti"></div>
+                <div class="confetti"></div>
+                <div class="confetti"></div>
+                <div class="confetti"></div>
+                <div class="confetti"></div>
+                <div class="confetti"></div>
+                <div class="confetti"></div>
+                <div class="confetti"></div>
+                <div class="confetti"></div>
+                <div class="confetti"></div>
+                <div class="confetti"></div>
+                <div class="confetti"></div>
+                <div class="confetti"></div>
+                <div class="confetti"></div>
+                <div class="confetti"></div>
+                <div class="confetti"></div>
+                <div class="confetti"></div>
+                <div class="confetti"></div>
+                <div class="confetti"></div>
+                
+                <div class="reveal-content">
+                    <div class="photo-reveal">
+                        <div class="photo-placeholder-large">
+                            <img src="photos/photo5.jpg" alt="photo 5">
+                            <!-- Replace above with: <img src="your-photo.jpg" alt="It's me!"> -->
+                        </div>
+                    </div>
+                    <h1 class="reveal-text">It's meee! &#128522;&#128149;
+                    </h1>
+                    <button class="btn-wow" id="wowBtn">Wow!</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Popup for "I know you like it" -->
+    <div class="popup-overlay hidden" id="likePopup">
+        <div class="popup-box">
+            <h2>I know you like it</h2>
+            <p style="font-size: 1.2rem; color: #666; margin-bottom: 30px;">Don't be shy,Ok😏</p>
+            <button class="btn-ok" id="okBtn">Ok</button>
+        </div>
+    </div>
+    
+    <!-- Final Popup Message -->
+    <div class="popup-overlay hidden" id="finalPopup">
+        <div class="popup-box">
+            <h2 style="margin-bottom: 20px;">Good night my dear &#127769;
+                have a sweet sleep</h2>
+            <h2 style="font-size: 1.5rem; color: #000000; margin-top: 20px;">Once again wish you many more happy return of the day Priyuu kutty 💕</h2>
+        </div>
+    </div>
+    
+    <script>
+        // Global variables
+        let giftBoxClicked = false;
+        
+        // Wait for DOM to be ready
+        document.addEventListener('DOMContentLoaded', function() {
+            const giftBox = document.getElementById('giftBox');
+            const giftBoxClickArea = document.getElementById('giftBoxClickArea');
+            const giftBoxWrapper = document.getElementById('giftBoxWrapper');
+            const explosionContainer = document.getElementById('explosionContainer');
+            const wowBtn = document.getElementById('wowBtn');
+            const likePopup = document.getElementById('likePopup');
+            const okBtn = document.getElementById('okBtn');
+            const finalPopup = document.getElementById('finalPopup');
+            
+            // Make sure gift box is clickable
+            function handleGiftBoxClick(e) {
+                console.log('🎁 Gift box clicked!', e);
+                
+                if (e) {
+                    e.preventDefault();
+                    e.stopPropagation();
+                    e.stopImmediatePropagation();
+                }
+                
+                // Prevent multiple clicks
+                if (giftBoxClicked || giftBox.classList.contains('explode')) {
+                    console.log('Already exploded, ignoring click');
+                    return;
+                }
+                
+                giftBoxClicked = true;
+                console.log('💥 Exploding gift box!');
+                
+                // Visual feedback immediately
+                giftBox.style.transform = 'scale(1.2)';
+                giftBox.style.opacity = '0.8';
+                
+                // Hide gift box with animation
+                setTimeout(() => {
+                    giftBox.classList.add('explode');
+                }, 100);
+                
+                // Create more confetti explosion
+                createConfettiBurst();
+                
+                // Show explosion and reveal after delay
+                setTimeout(() => {
+                    console.log('Showing explosion container...');
+                    if (giftBoxClickArea) {
+                        giftBoxClickArea.style.display = 'none';
+                        giftBoxClickArea.style.visibility = 'hidden';
+                    }
+                    if (giftBoxWrapper) {
+                        giftBoxWrapper.style.display = 'none';
+                        giftBoxWrapper.style.visibility = 'hidden';
+                    }
+                    
+                    // Force show the explosion container
+                    if (explosionContainer) {
+                        explosionContainer.classList.remove('hidden');
+                        explosionContainer.classList.add('show');
+                        explosionContainer.style.display = 'block';
+                        explosionContainer.style.visibility = 'visible';
+                        explosionContainer.style.opacity = '1';
+                        explosionContainer.style.zIndex = '1000';
+                        explosionContainer.style.position = 'relative';
+                        explosionContainer.style.width = '100%';
+                        explosionContainer.style.height = 'auto';
+                        
+                        // Also ensure reveal content is visible
+                        const revealContent = explosionContainer.querySelector('.reveal-content');
+                        if (revealContent) {
+                            revealContent.style.display = 'block';
+                            revealContent.style.visibility = 'visible';
+                            revealContent.style.opacity = '1';
+                        }
+                        
+                        console.log('Explosion container should be visible now!', explosionContainer);
+                        console.log('Reveal content:', revealContent);
+                    }
+                }, 500);
+            }
+            
+            // Make function global
+            window.handleGiftBoxClick = handleGiftBoxClick;
+            
+            // Advanced click handling - multiple methods
+            if (giftBoxClickArea) {
+                console.log('Setting up click area...', giftBoxClickArea);
+                
+                // Method 1: Click event
+                giftBoxClickArea.addEventListener('click', function(e) {
+                    console.log('Click event on click area');
+                    handleGiftBoxClick(e);
+                }, { capture: true, passive: false });
+                
+                // Method 2: Mouse down
+                giftBoxClickArea.addEventListener('mousedown', function(e) {
+                    console.log('Mouse down on click area');
+                    e.preventDefault();
+                    handleGiftBoxClick(e);
+                }, { capture: true, passive: false });
+                
+                // Method 3: Touch start
+                giftBoxClickArea.addEventListener('touchstart', function(e) {
+                    console.log('Touch start on click area');
+                    e.preventDefault();
+                    handleGiftBoxClick(e);
+                }, { capture: true, passive: false });
+                
+                // Method 4: Pointer events
+                giftBoxClickArea.addEventListener('pointerdown', function(e) {
+                    console.log('Pointer down on click area');
+                    e.preventDefault();
+                    handleGiftBoxClick(e);
+                }, { capture: true, passive: false });
+                
+                // Visual feedback on hover
+                giftBoxClickArea.addEventListener('mouseenter', function() {
+                    if (!giftBoxClicked) {
+                        giftBox.style.transform = 'scale(1.1)';
+                    }
+                });
+                
+                giftBoxClickArea.addEventListener('mouseleave', function() {
+                    if (!giftBoxClicked) {
+                        giftBox.style.transform = 'scale(1)';
+                    }
+                });
+                
+                // Force styles
+                giftBoxClickArea.style.cursor = 'pointer';
+                giftBoxClickArea.style.pointerEvents = 'auto';
+                giftBoxClickArea.style.zIndex = '10000';
+                giftBoxClickArea.style.position = 'relative';
+                
+                console.log('Click area setup complete!', {
+                    element: giftBoxClickArea,
+                    zIndex: window.getComputedStyle(giftBoxClickArea).zIndex,
+                    pointerEvents: window.getComputedStyle(giftBoxClickArea).pointerEvents
+                });
+            }
+            
+            // Also make the gift box itself clickable as backup
+            if (giftBox) {
+                giftBox.style.pointerEvents = 'auto';
+                giftBox.addEventListener('click', handleGiftBoxClick, true);
+                giftBox.addEventListener('mousedown', handleGiftBoxClick, true);
+                giftBox.addEventListener('touchstart', handleGiftBoxClick, true);
+            }
+            
+            // Add a test - click anywhere near the gift box
+            document.addEventListener('click', function(e) {
+                const clickArea = document.getElementById('giftBoxClickArea');
+                if (clickArea && !giftBoxClicked) {
+                    const rect = clickArea.getBoundingClientRect();
+                    const x = e.clientX;
+                    const y = e.clientY;
+                    
+                    // Check if click is within 100px of the gift box
+                    if (x >= rect.left - 100 && x <= rect.right + 100 &&
+                        y >= rect.top - 100 && y <= rect.bottom + 100) {
+                        console.log('Click detected near gift box, triggering...');
+                        handleGiftBoxClick(e);
+                    }
+                }
+            });
+            
+            // Add keyboard support
+            document.addEventListener('keydown', function(e) {
+                if ((e.key === 'Enter' || e.key === ' ') && !giftBoxClicked) {
+                    console.log('Keyboard trigger');
+                    handleGiftBoxClick(e);
+                }
+            });
+            
+            console.log('✅ Gift box system fully initialized!');
+            console.log('Click area:', giftBoxClickArea);
+            console.log('Gift box:', giftBox);
+            
+            // Function to create confetti burst
+            function createConfettiBurst() {
+                const colors = ['#ff6b6b', '#4ecdc4', '#ffe66d', '#a8e6cf', '#ff8b94', '#c7ceea', '#ffd3a5', '#fd79a8'];
+                const confettiCount = 50;
+                
+                for (let i = 0; i < confettiCount; i++) {
+                    const confetti = document.createElement('div');
+                    confetti.className = 'burst-confetti';
+                    confetti.style.position = 'fixed';
+                    confetti.style.width = Math.random() * 10 + 5 + 'px';
+                    confetti.style.height = Math.random() * 10 + 5 + 'px';
+                    confetti.style.backgroundColor = colors[Math.floor(Math.random() * colors.length)];
+                    confetti.style.left = Math.random() * 100 + '%';
+                    confetti.style.top = '50%';
+                    confetti.style.borderRadius = Math.random() > 0.5 ? '50%' : '0';
+                    confetti.style.pointerEvents = 'none';
+                    confetti.style.zIndex = '1000';
+                    
+                    const angle = Math.random() * 360;
+                    const velocity = Math.random() * 500 + 200;
+                    const x = Math.cos(angle * Math.PI / 180) * velocity;
+                    const y = Math.sin(angle * Math.PI / 180) * velocity;
+                    
+                    confetti.style.transform = `translate(${x}px, ${y}px) rotate(${angle}deg)`;
+                    confetti.style.opacity = '1';
+                    confetti.style.transition = 'all 2s ease-out';
+                    
+                    document.body.appendChild(confetti);
+                    
+                    setTimeout(() => {
+                        confetti.style.opacity = '0';
+                        confetti.style.transform += ' scale(0)';
+                        setTimeout(() => confetti.remove(), 2000);
+                    }, 100);
+                }
+            }
+            
+            // Add floating celebration elements
+            for(let i = 0; i < 20; i++) {
+                const sparkle = document.createElement('div');
+                sparkle.className = 'sparkle';
+                sparkle.style.left = Math.random() * 100 + '%';
+                sparkle.style.top = Math.random() * 100 + '%';
+                sparkle.style.animationDelay = Math.random() * 4 + 's';
+                document.getElementById('celebrationBg').appendChild(sparkle);
+            }
+            
+            wowBtn.addEventListener('click', function() {
+                // Show popup
+                likePopup.classList.remove('hidden');
+                setTimeout(() => {
+                    likePopup.classList.add('show');
+                }, 10);
+            });
+            
+            okBtn.addEventListener('click', function() {
+                // Hide first popup
+                likePopup.classList.remove('show');
+                setTimeout(() => {
+                    likePopup.classList.add('hidden');
+                    // Show final popup
+                    finalPopup.classList.remove('hidden');
+                    setTimeout(() => {
+                        finalPopup.classList.add('show');
+                    }, 10);
+                }, 300);
+            });
+        });
+        
+        // Music control
+        const audio = document.createElement('audio');
+        audio.id = 'backgroundMusic';
+        audio.loop = true;
+        const source = document.createElement('source');
+        source.src = "C:\Users\santh\OneDrive\Desktop\thajaa\gift\music\happy-birthday-33487.mp3.mp3";
+        source.type = 'audio/mpeg';
+        audio.appendChild(source);
+        document.body.appendChild(audio);
+        
+        let musicPlaying = false;
+        
+        // Create music control button
+        const musicBtn = document.createElement('button');
+        musicBtn.id = 'musicToggle';
+        musicBtn.className = 'music-control';
+        musicBtn.title = 'Toggle Music';
+        musicBtn.innerHTML = '<span id="musicIcon">🎵</span>';
+        musicBtn.onclick = function() {
+            if (musicPlaying) {
+                audio.pause();
+                musicPlaying = false;
+                document.getElementById('musicIcon').textContent = '🔇';
+            } else {
+                audio.play().then(() => {
+                    musicPlaying = true;
+                    document.getElementById('musicIcon').textContent = '🎵';
+                }).catch(() => {
+                    document.getElementById('musicIcon').textContent = '▶️';
+                });
+            }
+        };
+        document.body.appendChild(musicBtn);
+        
+        // Try to start music on first interaction
+        document.addEventListener('click', function startMusic() {
+            if (!musicPlaying) {
+                audio.play().then(() => {
+                    musicPlaying = true;
+                    document.getElementById('musicIcon').textContent = '🎵';
+                }).catch(() => {});
+            }
+            document.removeEventListener('click', startMusic);
+        }, { once: true });
+    </script>
+</body>
+</html>
+

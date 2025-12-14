@@ -1,0 +1,218 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Happy Birthday! 🎂</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700;900&family=Poppins:wght@300;400;500;600;700&family=Dancing+Script:wght@400;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body class="page3">
+    <div class="celebration-bg" id="celebrationBg"></div>
+    <div class="page-explosion" id="pageExplosion"></div>
+    <div class="container birthday-container">
+        <div class="birthday-card" id="birthdayCard">
+            <div class="card-header">
+                <h1 class="birthday-title">🎉 Happy Birthday! 🎉</h1>
+            </div>
+            
+            <div class="photos-grid">
+                <!-- To add photos: Replace the photo-placeholder div with: <img src="path/to/photo1.jpg" alt="Photo 1"> -->
+               < <div class="photo-frame frame1">
+                    <div class="photo-placeholder">
+                        <img src="C:\Users\santh\OneDrive\Desktop\thajaa\gift\photos\photo1.jpg" alt="photo1">
+                        <!-- Replace above with: <img src="photos/photo1.jpg" alt="Photo 1"> -->
+                    </div>
+                </div>
+                <div class="photo-frame frame2">
+                    <div class="photo-placeholder">
+                        <img src="C:\Users\santh\OneDrive\Desktop\thajaa\gift\photos\photo2.jpg" alt="photo2">
+                        <!-- Replace above with: <img src="photos/photo2.jpg" alt="Photo 2"> -->
+                    </div>
+                </div>
+                <div class="photo-frame frame3">
+                    <div class="photo-placeholder">
+                        <img src="C:\Users\santh\OneDrive\Desktop\thajaa\gift\photos\photo3.jpg" alt="photo3">
+                        <!-- Replace above with: <img src="photos/photo3.jpg" alt="Photo 3"> -->
+                    </div>
+                </div>
+                <div class="photo-frame frame4">
+                    <div class="photo-placeholder">
+                        <img src="C:\Users\santh\OneDrive\Desktop\thajaa\gift\photos\photo4.jpg" alt="photo4">
+                        <!-- Replace above with: <img src="photos/photo4.jpg" alt="Photo 4"> -->
+                    </div>
+                </div>
+            </div>
+            
+            <div class="decorations">
+                <div class="cake">🎂</div>
+                <div class="balloon balloon1">🎈</div>
+                <div class="balloon balloon2">🎈</div>
+                <div class="balloon balloon3">🎈</div>
+                <div class="balloon balloon4">🎈</div>
+            </div>
+        </div>
+        
+        <div class="surprise-message hidden" id="surpriseMessage">
+            <h2>Hey, I have a surprise for you! 🎁</h2>
+            <p>Do you want to see it?</p>
+            <button class="btn-primary" onclick="window.location.href='page4.html'">
+                Then Click Here
+            </button>
+        </div>
+    </div>
+    
+    <!-- Background Music -->
+    <audio id="backgroundMusic" loop>
+        <source src="C:\Users\santh\OneDrive\Desktop\thajaa\gift\music\happy-birthday-33487.mp3.mp3" type="audio/mpeg">
+    </audio>
+    
+    <!-- Music Control Button -->
+    <button id="musicToggle" class="music-control" onclick="toggleMusic()" title="Toggle Music">
+        <span id="musicIcon">🎵</span>
+    </button>
+    
+    <script src="script.js"></script>
+    <script>
+        // Music control
+        const audio = document.getElementById('backgroundMusic');
+        let musicPlaying = false;
+        
+        // Set volume
+        audio.volume = 0.7;
+        
+        function toggleMusic() {
+            if (musicPlaying) {
+                audio.pause();
+                musicPlaying = false;
+                document.getElementById('musicIcon').textContent = '🔇';
+            } else {
+                audio.play().then(() => {
+                    musicPlaying = true;
+                    document.getElementById('musicIcon').textContent = '🎵';
+                }).catch(() => {
+                    document.getElementById('musicIcon').textContent = '▶️';
+                });
+            }
+        }
+        
+        // Auto-start music after explosion
+        function startMusicAfterExplosion() {
+            setTimeout(() => {
+                audio.play().then(() => {
+                    musicPlaying = true;
+                    document.getElementById('musicIcon').textContent = '🎵';
+                }).catch(() => {
+                    // If auto-play fails, try on first click
+                    document.addEventListener('click', function startMusicOnClick() {
+                        if (!musicPlaying) {
+                            audio.play().then(() => {
+                                musicPlaying = true;
+                                document.getElementById('musicIcon').textContent = '🎵';
+                            }).catch(() => {});
+                        }
+                        document.removeEventListener('click', startMusicOnClick);
+                    }, { once: true });
+                });
+            }, 1000); // Start music 1 second after page load (after explosion starts)
+        }
+        
+        // Start music when page loads
+        window.addEventListener('load', startMusicAfterExplosion);
+        
+        // Also try to start on first interaction as backup
+        document.addEventListener('click', function startMusicOnInteraction() {
+            if (!musicPlaying) {
+                audio.play().then(() => {
+                    musicPlaying = true;
+                    document.getElementById('musicIcon').textContent = '🎵';
+                }).catch(() => {});
+            }
+            document.removeEventListener('click', startMusicOnInteraction);
+        }, { once: true });
+        
+        // Page explosion effect on load
+        function createPageExplosion() {
+            const explosionContainer = document.getElementById('pageExplosion');
+            const colors = ['#ff6b6b', '#4ecdc4', '#ffe66d', '#a8e6cf', '#ff8b94', '#c7ceea', '#ffd3a5', '#fd79a8', '#ffd700', '#ff69b4'];
+            const confettiCount = 100;
+            
+            // Hide birthday card initially
+            const birthdayCard = document.getElementById('birthdayCard');
+            if (birthdayCard) {
+                birthdayCard.style.opacity = '0';
+                birthdayCard.style.transform = 'scale(0.5)';
+            }
+            
+            // Create explosion particles
+            for (let i = 0; i < confettiCount; i++) {
+                const confetti = document.createElement('div');
+                confetti.className = 'explosion-particle';
+                confetti.style.position = 'fixed';
+                confetti.style.width = Math.random() * 15 + 8 + 'px';
+                confetti.style.height = Math.random() * 15 + 8 + 'px';
+                confetti.style.backgroundColor = colors[Math.floor(Math.random() * colors.length)];
+                confetti.style.left = '50%';
+                confetti.style.top = '50%';
+                confetti.style.borderRadius = Math.random() > 0.5 ? '50%' : '0';
+                confetti.style.pointerEvents = 'none';
+                confetti.style.zIndex = '9999';
+                
+                const angle = Math.random() * 360;
+                const velocity = Math.random() * 600 + 300;
+                const x = Math.cos(angle * Math.PI / 180) * velocity;
+                const y = Math.sin(angle * Math.PI / 180) * velocity;
+                
+                confetti.style.transform = `translate(-50%, -50%) translate(${x}px, ${y}px) rotate(${angle}deg)`;
+                confetti.style.opacity = '1';
+                confetti.style.transition = 'all 2s ease-out';
+                
+                explosionContainer.appendChild(confetti);
+                
+                setTimeout(() => {
+                    confetti.style.opacity = '0';
+                    confetti.style.transform += ' scale(0)';
+                    setTimeout(() => confetti.remove(), 2000);
+                }, 100);
+            }
+            
+            // Show birthday card after explosion
+            setTimeout(() => {
+                if (birthdayCard) {
+                    birthdayCard.style.transition = 'all 1s cubic-bezier(0.175, 0.885, 0.32, 1.275)';
+                    birthdayCard.style.opacity = '1';
+                    birthdayCard.style.transform = 'scale(1)';
+                }
+            }, 800);
+        }
+        
+        // Trigger explosion on page load
+        window.addEventListener('load', function() {
+            setTimeout(createPageExplosion, 300);
+        });
+        
+        // Add floating celebration elements
+        for(let i = 0; i < 30; i++) {
+            const sparkle = document.createElement('div');
+            sparkle.className = 'sparkle';
+            sparkle.style.left = Math.random() * 100 + '%';
+            sparkle.style.top = Math.random() * 100 + '%';
+            sparkle.style.animationDelay = Math.random() * 4 + 's';
+            document.getElementById('celebrationBg').appendChild(sparkle);
+        }
+        
+        for(let i = 0; i < 15; i++) {
+            const heart = document.createElement('div');
+            heart.className = 'floating-heart';
+            heart.innerHTML = ['💕', '🎉', '🎊', '✨'][Math.floor(Math.random() * 4)];
+            heart.style.left = Math.random() * 100 + '%';
+            heart.style.top = Math.random() * 100 + '%';
+            heart.style.animationDelay = Math.random() * 6 + 's';
+            document.getElementById('celebrationBg').appendChild(heart);
+        }
+    </script>
+</body>
+</html>
+

@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Hey Cutie! 💕</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700;900&family=Poppins:wght@300;400;500;600;700&family=Dancing+Script:wght@400;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body class="page1">
+    <div class="celebration-bg" id="celebrationBg"></div>
+    <div class="container">
+        <div class="content fade-in">
+            <h1 class="title">Hey Cutie! 💕</h1>
+            <p class="subtitle">What are you doing?</p>
+            <button class="btn-primary" onclick="window.location.href='page2.html'">
+                Click Here
+            </button>
+        </div>
+    </div>
+    <script>
+        // Add floating sparkles
+        for(let i = 0; i < 20; i++) {
+            const sparkle = document.createElement('div');
+            sparkle.className = 'sparkle';
+            sparkle.style.left = Math.random() * 100 + '%';
+            sparkle.style.top = Math.random() * 100 + '%';
+            sparkle.style.animationDelay = Math.random() * 4 + 's';
+            document.getElementById('celebrationBg').appendChild(sparkle);
+        }
+    </script>
+</body>
+</html>
+
